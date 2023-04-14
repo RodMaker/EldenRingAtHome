@@ -21,6 +21,10 @@ namespace RM
         {
             base.Update();
 
+            // If we do not own this gameobject, we do not control or edit it
+            if (!IsOwner)
+                return;
+
             // Handle movement
             playerLocomotionManager.HandleAllMovement();
         }

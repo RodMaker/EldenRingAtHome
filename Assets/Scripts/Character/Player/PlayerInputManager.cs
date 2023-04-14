@@ -16,6 +16,9 @@ namespace RM
         PlayerControls playerControls;
 
         [SerializeField] Vector2 movementInput;
+        public float verticalInput;
+        public float horizontalInput;
+        public float moveAmount;
 
         private void Awake()
         {
@@ -70,6 +73,46 @@ namespace RM
         {
             // If we destroy this object, unsubscribe from this event
             SceneManager.activeSceneChanged -= OnSceneChange;
+        }
+
+        // If we minimize or lower the window, stop adjusting inputs
+        private void OnApplicationFocus(bool focus)
+        {
+            if (enabled) 
+            {
+                if (focus)
+                {
+                    playerControls.Enable();
+                }
+                else
+                { 
+                    playerControls.Disable();
+                }
+            }
+        }
+
+        private void Update()
+        {
+            HandleMovementInput();
+        }
+
+        private void HandleMovementInput()
+        {
+            verticalInput = movementInput.y;
+            horizontalInput = movementInput.x;
+
+            // Returns the absolute number, (meaning number without the negative sign, so it's always positive)
+            moveAmount = Mathf.Clamp01(Mathf.Abs(verticalInput) + Mathf.Abs(horizontalInput));
+
+            // We clamp the values, so they are 0, 0.5 or 1
+            if (moveAmount <= 0.5 && moveAmount > 0)
+            {
+                moveAmount = 0.5f;
+            }
+            else if (moveAmount > 0.5 && moveAmount <= 1)
+            {
+                moveAmount = 1;
+            }
         }
     }
 
