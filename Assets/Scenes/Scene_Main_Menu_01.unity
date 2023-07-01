@@ -1384,7 +1384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31ffaf532339dc544a07b8d08bdd955d, type: 3}
---- !u!1001 &1054742740012272368
+--- !u!1001 &1262865218760044908
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1394,7 +1394,7 @@ PrefabInstance:
     - target: {fileID: 422240857254569554, guid: 3926beed64edb7e44a8473058c1ccc3a,
         type: 3}
       propertyPath: m_Name
-      value: Player Camera
+      value: Player Camera (Left & Right)
       objectReference: {fileID: 0}
     - target: {fileID: 3057338988568984309, guid: 3926beed64edb7e44a8473058c1ccc3a,
         type: 3}
