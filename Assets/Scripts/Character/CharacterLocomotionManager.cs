@@ -10,6 +10,11 @@ namespace RM
         {
 
         }
+
+        protected virtual void Update()
+        {
+
+        }
     }
 
 }

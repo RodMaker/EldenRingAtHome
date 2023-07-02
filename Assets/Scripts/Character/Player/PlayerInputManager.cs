@@ -12,6 +12,7 @@ namespace RM
         // 2. Move character based on those values
 
         public static PlayerInputManager instance;
+        public PlayerManager player;
 
         PlayerControls playerControls;
 
@@ -65,7 +66,7 @@ namespace RM
 
         private void OnEnable()
         {
-            if (playerControls != null)
+            if (playerControls == null)
             {
                 playerControls = new PlayerControls();
 
@@ -121,6 +122,17 @@ namespace RM
             {
                 moveAmount = 1;
             }
+
+            // Why do we pass 0 on the horizontal? Because we only want non-strafing movement
+            // We use the horizontal when we are strafing or locked on
+
+            if (player == null)
+                return;
+
+            // If we are not locked on, only use the move amount
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount);
+
+            // If we are locked on pass the horizontal movement as well
         }
 
         private void HandleCameraMovementInput()
