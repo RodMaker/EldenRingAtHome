@@ -8,6 +8,7 @@ namespace RM
     {
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
+        [HideInInspector] public PlayerNetworkManager playerNetworkManager;
 
         protected override void Awake()
         {
@@ -17,6 +18,7 @@ namespace RM
 
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerNetworkManager = GetComponent<PlayerNetworkManager>();
         }
 
         protected override void Update()

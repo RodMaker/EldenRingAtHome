@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 namespace RM
 {
-    public class PlayerNetworkManager : MonoBehaviour
+    public class PlayerNetworkManager : CharacterNetworkManager
     {
     
     }

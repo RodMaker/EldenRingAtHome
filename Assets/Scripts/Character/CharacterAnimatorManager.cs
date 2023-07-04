@@ -9,18 +9,29 @@ namespace RM
     {
         CharacterManager character;
 
-        float horizontal;
-        float vertical;
+        int horizontal;
+        int vertical;
 
         protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
+
+            horizontal = Animator.StringToHash("Horizontal");
+            vertical = Animator.StringToHash("Vertical");
         }
 
-        public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement)
+        public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting)
         {
-            character.animator.SetFloat("Horizontal", horizontalMovement, 0.1f, Time.deltaTime);
-            character.animator.SetFloat("Vertical", verticalMovement, 0.1f, Time.deltaTime);
+            float horizontalAmount = horizontalMovement;
+            float verticalAmount = verticalMovement;
+
+            if (isSprinting)
+            {
+                verticalAmount = 2;
+            }
+
+            character.animator.SetFloat(horizontal, horizontalAmount, 0.1f, Time.deltaTime);
+            character.animator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
         }
 
         public virtual void PlayTargetActionAnimation(

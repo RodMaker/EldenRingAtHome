@@ -29,6 +29,7 @@ namespace RM
 
         [Header("PLAYER ACTION INPUT")]
         [SerializeField] bool dodgeInput = false;
+        [SerializeField] bool sprintInput = false;
 
         private void Awake()
         {
@@ -76,6 +77,11 @@ namespace RM
                 playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
+
+                // Holding the input, sets the bool to true
+                playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
+                // Releasing the input, sets the bool to false
+                playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
             }
 
             playerControls.Enable();
@@ -113,6 +119,7 @@ namespace RM
             HandlePlayerMovementInput();
             HandleCameraMovementInput();
             HandleDodgeInput();
+            HandleSprinting();
         }
 
         // Movement
@@ -142,7 +149,7 @@ namespace RM
                 return;
 
             // If we are not locked on, only use the move amount
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount);
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
 
             // If we are locked on pass the horizontal movement as well
         }
@@ -165,6 +172,19 @@ namespace RM
 
                 // Perform a dodge
                 player.playerLocomotionManager.AttemptToPerformDodge();
+            }
+        }
+
+        private void HandleSprinting()
+        {
+            if (sprintInput)
+            {
+                // Handle sprinting
+                player.playerLocomotionManager.HandleSprinting();
+            }
+            else
+            {
+                player.playerNetworkManager.isSprinting.Value = false;
             }
         }
     }
