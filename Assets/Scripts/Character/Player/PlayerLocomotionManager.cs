@@ -19,9 +19,11 @@ namespace RM
         [SerializeField] float runningSpeed = 5;
         [SerializeField] float sprintingSpeed = 6.5f;
         [SerializeField] float rotationSpeed = 15;
+        [SerializeField] int sprintingStaminaCost = 2;
 
         [Header("Dodge")]
         private Vector3 rollDirection;
+        [SerializeField] float dodgeStaminaCost = 25;
 
         protected override void Awake()
         {
@@ -131,6 +133,11 @@ namespace RM
             }
 
             // If we are out of stamina, set sprinting to false
+            if (player.playerNetworkManager.currentStamina.Value <= 0)
+            {
+                player.playerNetworkManager.isSprinting.Value = false;
+                return;
+            }
 
             // If we are moving set sprinting to true
             // If we are stationary set sprinting to false
@@ -142,11 +149,19 @@ namespace RM
             {
                 player.playerNetworkManager.isSprinting.Value = false;
             }
+
+            if (player.playerNetworkManager.isSprinting.Value)
+            {
+                player.playerNetworkManager.currentStamina.Value -= sprintingStaminaCost * Time.deltaTime;
+            }
         }
 
         public void AttemptToPerformDodge()
         {
             if (player.isPerformingAction)
+                return;
+
+            if (player.playerNetworkManager.currentStamina.Value <= 0)
                 return;
 
             // If we are moving when we attempt to dodge, we perform a roll
@@ -169,6 +184,8 @@ namespace RM
                 // Perform a backstep animation
                 player.playerAnimatorManager.PlayTargetActionAnimation("Back_Step_01", true, true);
             }
+
+            player.playerNetworkManager.currentStamina.Value -= dodgeStaminaCost;
         }
     }
 
