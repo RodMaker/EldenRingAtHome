@@ -275,6 +275,16 @@ namespace RM
             saveFileDataWriter.CreateNewCharacterSaveFile(currentCharacterData);
         }
 
+        public void DeleteGame(CharacterSlot characterSlot)
+        {
+            // Choose file based on name
+            saveFileDataWriter = new SaveFileDataWriter();
+            saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
+            saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(characterSlot);
+            
+            saveFileDataWriter.DeleteSaveFile();
+        }
+
         // Load all character profiles on device when starting game
         private void LoadAllCharacterProfiles()
         {
