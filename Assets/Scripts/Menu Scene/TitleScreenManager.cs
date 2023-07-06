@@ -8,6 +8,8 @@ namespace RM
 {
     public class TitleScreenManager : MonoBehaviour
     {
+        public static TitleScreenManager instance;
+
         [Header("Menus")]
         [SerializeField] GameObject titleScreenMainMenu;
         [SerializeField] GameObject titleScreenLoadMenu;
@@ -15,6 +17,23 @@ namespace RM
         [Header("Buttons")]
         [SerializeField] Button loadMenuReturnButton;
         [SerializeField] Button mainMenuLoadGameButton;
+        [SerializeField] Button mainMenuNewGameButton;
+
+        [Header("Pop Ups")]
+        [SerializeField] GameObject noCharacterSlotsPopUp;
+        [SerializeField] Button noCharacterSlotsOkayButton;
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
 
         // Starts the network as a host
         public void StartNetworkAsHost()
@@ -24,8 +43,7 @@ namespace RM
 
         public void StartNewGame()
         {
-            WorldSaveGameManager.instance.CreateNewGame();
-            StartCoroutine(WorldSaveGameManager.instance.LoadWorldScene());
+            WorldSaveGameManager.instance.AttemptToCreateNewGame();
         }
 
         public void OpenLoadGameMenu()
@@ -48,8 +66,20 @@ namespace RM
             // Open main menu
             titleScreenMainMenu.SetActive(true);
 
-            // Select the return button first
+            // Select the load game button first
             mainMenuLoadGameButton.Select();
+        }
+
+        public void DisplayNoFreeCharacterSlotsPopUp()
+        {
+            noCharacterSlotsPopUp.SetActive(true);
+            noCharacterSlotsOkayButton.Select();
+        }
+
+        public void CloseNoFreeCharacterSlotsPopUp()
+        {
+            noCharacterSlotsPopUp.SetActive(false);
+            mainMenuNewGameButton.Select();
         }
     }
 
