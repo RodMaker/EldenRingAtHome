@@ -13,6 +13,8 @@ namespace RM
 
         [Header("Flags")]
         public bool isPerformingAction = false;
+        public bool isJumping = false;
+        public bool isGrounded = true;
         public bool applyRootMotion = false;
         public bool canRotate = true;
         public bool canMove = true;
@@ -28,6 +30,8 @@ namespace RM
 
         protected virtual void Update()
         {
+            animator.SetBool("IsGrounded", isGrounded);
+
             // If this character is being controlled from our side, then assign its network position to the position of our transform
             if (IsOwner)
             {

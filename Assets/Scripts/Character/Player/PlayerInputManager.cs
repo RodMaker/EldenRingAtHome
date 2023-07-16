@@ -30,6 +30,7 @@ namespace RM
         [Header("PLAYER ACTION INPUT")]
         [SerializeField] bool dodgeInput = false;
         [SerializeField] bool sprintInput = false;
+        [SerializeField] bool jumpInput = false;
 
         private void Awake()
         {
@@ -77,6 +78,7 @@ namespace RM
                 playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
                 playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
+                playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
 
                 // Holding the input, sets the bool to true
                 playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
@@ -119,7 +121,7 @@ namespace RM
             HandlePlayerMovementInput();
             HandleCameraMovementInput();
             HandleDodgeInput();
-            HandleSprinting();
+            HandleSprintInput();
         }
 
         // Movement
@@ -175,7 +177,7 @@ namespace RM
             }
         }
 
-        private void HandleSprinting()
+        private void HandleSprintInput()
         {
             if (sprintInput)
             {
@@ -185,6 +187,19 @@ namespace RM
             else
             {
                 player.playerNetworkManager.isSprinting.Value = false;
+            }
+        }
+
+        private void HandleJumpInput()
+        {
+            if (jumpInput)
+            {
+                jumpInput = false;
+
+                // If we have a ui window open, simply return without doing anything
+
+                // Attempt to perform jump
+                player.playerLocomotionManager.AttemptToPerformJump();
             }
         }
     }
