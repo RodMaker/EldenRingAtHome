@@ -9,7 +9,7 @@ namespace RM
         CharacterManager character;
 
         [Header("Ground Check & Jumping")]
-        [SerializeField] float gravityForce = -5.55f;
+        [SerializeField] protected float gravityForce = -5.55f;
         [SerializeField] LayerMask groundLayer;
         [SerializeField] float groundCheckSphereRadius = 1;
         [SerializeField] protected Vector3 yVelocity; // The force at which our character is pulled up or down (jumping or falling)

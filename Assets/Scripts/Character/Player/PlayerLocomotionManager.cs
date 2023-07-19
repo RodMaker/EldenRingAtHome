@@ -25,7 +25,12 @@ namespace RM
         private Vector3 rollDirection;
         [SerializeField] float dodgeStaminaCost = 25;
 
+        [Header("Jump")]
         [SerializeField] float jumpStaminaCost = 25;
+        [SerializeField] float jumpHeight = 4;
+        [SerializeField] float jumpForwardSpeed = 5;
+        [SerializeField] float freeFallSpeed = 2;
+        private Vector3 jumpDirection;
 
         protected override void Awake()
         {
@@ -63,6 +68,8 @@ namespace RM
             HandleRotation();
 
             // Aerial movement
+            HandleJumpingMovement();
+            HandleFreeFallMovement();
         }
 
         private void GetMovementValues()
@@ -102,6 +109,28 @@ namespace RM
                     // Move at a walking speed
                     player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
                 }
+            }
+        }
+
+        private void HandleJumpingMovement()
+        {
+            if (player.isJumping)
+            {
+                player.characterController.Move(jumpDirection * jumpForwardSpeed * Time.deltaTime);
+            }
+        }
+
+        private void HandleFreeFallMovement()
+        {
+            if (!player.isGrounded)
+            {
+                Vector3 freeFallDirection;
+
+                freeFallDirection = PlayerCamera.instance.transform.forward * PlayerInputManager.instance.verticalInput;
+                freeFallDirection = freeFallDirection + PlayerCamera.instance.transform.right * PlayerInputManager.instance.horizontalInput;
+                freeFallDirection.y = 0;
+
+                player.characterController.Move(freeFallDirection * freeFallSpeed * Time.deltaTime);
             }
         }
 
@@ -205,7 +234,7 @@ namespace RM
                 return;
 
             // If we are not grounded, we do not want to allow a jump
-            if (player.isGrounded)
+            if (!player.isGrounded)
                 return;
 
             // If we are two handing our weapon, play the two handed jump animation, otherwise play the one handed animation (to do)
@@ -214,11 +243,35 @@ namespace RM
             player.isJumping = true;
 
             player.playerNetworkManager.currentStamina.Value -= jumpStaminaCost;
+
+            jumpDirection = PlayerCamera.instance.cameraObject.transform.forward * PlayerInputManager.instance.verticalInput;
+            jumpDirection += PlayerCamera.instance.cameraObject.transform.right * PlayerInputManager.instance.horizontalInput;
+            jumpDirection.y = 0;
+
+            if (jumpDirection != Vector3.zero)
+            {
+                // If we are sprinting, jump direction is at full distance
+                if (player.playerNetworkManager.isSprinting.Value)
+                {
+                    jumpDirection *= 1;
+                }
+                // If we are running, jump direction is at half distance
+                else if (PlayerInputManager.instance.moveAmount > 0.5)
+                {
+                    jumpDirection *= 0.5f;
+                }
+                // If we are walking, jump direction is at quarter distance
+                else if (PlayerInputManager.instance.moveAmount <= 0.5)
+                {
+                    jumpDirection *= 0.25f;
+                }
+            }
         }
 
         public void ApplyJumpingVelocity()
         {
             // Apply an upward velocity
+            yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
         }
     }
 }

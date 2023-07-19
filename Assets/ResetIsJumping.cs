@@ -1,10 +1,12 @@
+using RM;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace RM
 {
-    public class ResetActionFlag : StateMachineBehaviour
+    public class ResetIsJumping : StateMachineBehaviour
     {
         CharacterManager character;
 
@@ -17,10 +19,6 @@ namespace RM
             }
 
             // This is called when an action ends, and the state returns to "Empty"
-            character.isPerformingAction = false;
-            character.applyRootMotion = false;
-            character.canRotate = true;
-            character.canMove = true;
             character.isJumping = false;
         }
 

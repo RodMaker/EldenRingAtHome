@@ -122,6 +122,7 @@ namespace RM
             HandleCameraMovementInput();
             HandleDodgeInput();
             HandleSprintInput();
+            HandleJumpInput();
         }
 
         // Movement
