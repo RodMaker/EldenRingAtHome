@@ -630,6 +630,7 @@ GameObject:
   - component: {fileID: -3023734279163606355}
   - component: {fileID: -5206432223660065276}
   - component: {fileID: 5986689577383532658}
+  - component: {fileID: -5771861685985340624}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -745,6 +746,9 @@ MonoBehaviour:
   sprintingStaminaCost: 2
   dodgeStaminaCost: 25
   jumpStaminaCost: 25
+  jumpHeight: 4
+  jumpForwardSpeed: 5
+  freeFallSpeed: 2
 --- !u!143 &-1720765024131964290
 CharacterController:
   m_ObjectHideFlags: 0
@@ -999,6 +1003,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaRegenerationAmount: 2
   staminaRegenerationDelay: 2
+--- !u!114 &-5771861685985340624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2659210008394567178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7591b37d54d30342bad6c81ec7eb890, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectToTest: {fileID: 11400000, guid: 35afb5e1f0921044abb0d424107715b7, type: 2}
+  processEffect: 0
 --- !u!1 &2793602556120545688
 GameObject:
   m_ObjectHideFlags: 0
