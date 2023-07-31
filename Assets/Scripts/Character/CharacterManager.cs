@@ -15,6 +15,7 @@ namespace RM
 
         [HideInInspector] public CharacterNetworkManager characterNetworkManager;
         [HideInInspector] public CharacterEffectsManager characterEffectsManager;
+        [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
 
         [Header("Flags")]
         public bool isPerformingAction = false;
@@ -32,6 +33,7 @@ namespace RM
             animator = GetComponent<Animator>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
             characterEffectsManager = GetComponent<CharacterEffectsManager>();
+            characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
         }
 
         protected virtual void Update()
@@ -61,6 +63,37 @@ namespace RM
         }
 
         protected virtual void LateUpdate()
+        {
+
+        }
+
+        public virtual IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false)
+        {
+            if (IsOwner)
+            {
+                characterNetworkManager.currentHealth.Value = 0;
+                isDead.Value = true;
+
+                // Reset any flags here that need to be reset
+
+                // If we are not grounded, play an aerial death animation
+
+                if (!manuallySelectDeathAnimation)
+                {
+                    characterAnimatorManager.PlayTargetActionAnimation("Dead_01", true);
+                }
+            }
+
+            // Play some death sfx
+
+            yield return new WaitForSeconds(5);
+
+            // Award players with runes
+
+            // Disable character
+        }
+
+        public virtual void ReviveCharacter()
         {
 
         }
