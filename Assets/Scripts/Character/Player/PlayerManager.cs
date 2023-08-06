@@ -13,6 +13,7 @@ namespace RM
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
         [HideInInspector] public PlayerStatsManager playerStatsManager;
+        [HideInInspector] public PlayerInventoryManager playerInventoryManager;
 
         protected override void Awake()
         {
@@ -20,10 +21,11 @@ namespace RM
 
             // Do more stuff, only for the player
 
-            playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
         }
 
         protected override void Update()
